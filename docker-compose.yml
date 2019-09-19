@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+  db:
+    image: mysql
+    volumes:
+    - ./bdd:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=randomusic
+    ports:
+    - "3308:3306"
+    # networks:
+    #   my_net:
+    #     ipv4_address: 192.168.0.5
+    restart: always
+
+  back:
+#    build: ./back
+    image : pythontest:latest
+#    depends_on:
+#    - db
+    volumes:
+    - "./usr/src/app"
+    ports:
+    - "80:5000"
+    # networks:
+    #   my_net:
+    #     ipv4_address: 192.168.0.6
+    environment:
+      - "DB_HOST=localhost"
+     
+# networks:
+  # my_net:
+  #   ipam:
+  #     driver: default
+  #     config:
+  #       - subnet: 192.168.0.0/16
